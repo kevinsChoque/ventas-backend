@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\ProductController;
+use App\Http\Controllers\Api\ClientController;
 use App\Http\Controllers\Api\UnitController;
 
 /*
@@ -21,4 +22,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::apiResource('products', ProductController::class);
+Route::apiResource('clients', ClientController::class);
 Route::get('units', [UnitController::class, 'getUnits']);

@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\Client;
 
 class DatabaseSeeder extends Seeder
 {
@@ -20,5 +21,7 @@ class DatabaseSeeder extends Seeder
         // ]);
         $this->call(UnitSeeder::class);
         $this->call(ProductSeeder::class);
+        // $this->call(ClientSeeder::class);
+        Client::factory(66)->create();
     }
 }
