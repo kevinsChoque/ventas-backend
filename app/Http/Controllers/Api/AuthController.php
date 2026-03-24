@@ -10,6 +10,7 @@ class AuthController extends Controller
 {
     public function login(Request $request)
     {
+        // echo('vsa');exit();
         $request->validate([
             'email' => 'required|email',
             'password' => 'required'
@@ -19,9 +20,22 @@ class AuthController extends Controller
                 'message' => 'Credenciales incorrectas'
             ], 401);
         }
+        $user = Auth::user();
+        // 🔥 CREAR TOKEN
+        $token = $user->createToken('auth_token')->plainTextToken;
         return response()->json([
             'message' => 'Login exitoso',
-            'user' => Auth::user()
+            'user' => $user,
+            'token' => $token
+        ]);
+    }
+    public function logout(Request $request)
+    {
+        // $request->user()->tokens()->delete();
+        $request->user()->currentAccessToken()->delete();
+
+        return response()->json([
+            'message' => 'Sesión cerrada'
         ]);
     }
 }

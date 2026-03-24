@@ -22,7 +22,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 Route::post('/login', [AuthController::class, 'login']);
+// 🔒 protegida
+Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logout']);
 
 Route::apiResource('products', ProductController::class);
-Route::apiResource('clients', ClientController::class);
+Route::apiResource('clients', ClientController::class);//->middleware('auth:sanctum')
 Route::get('units', [UnitController::class, 'getUnits']);
