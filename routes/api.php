@@ -6,6 +6,8 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\ClientController;
 use App\Http\Controllers\Api\UnitController;
+use App\Http\Controllers\Api\CategoryController;
+use App\Http\Controllers\Api\BrandController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,3 +30,5 @@ Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logo
 Route::apiResource('products', ProductController::class);
 Route::apiResource('clients', ClientController::class);//->middleware('auth:sanctum')
 Route::get('units', [UnitController::class, 'getUnits']);
+Route::apiResource('categories', CategoryController::class);
+Route::apiResource('brands', BrandController::class);
