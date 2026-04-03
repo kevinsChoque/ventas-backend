@@ -11,9 +11,26 @@ class BrandController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        return response()->json(Brand::paginate(6));
+        $perPage = (int) $request->query('per_page', 6); // Default to 6 if not provided
+        $page = (int) $request->query('page', 1); // Default to page 1 if not provided
+        $search = $request->query('search', ''); // Default to empty string if not provided
+
+        // Ensure perPage and page are valid numbers
+        $perPage = $perPage > 0 ? $perPage : 6;
+        $page = $page > 0 ? $page : 1;
+
+        // Query with optional search filter
+        $query = Brand::query();
+        if (!empty($search)) {
+            $query->where('name', 'like', "%$search%");
+        }
+
+        // Paginate the results
+        $brands = $query->paginate($perPage, ['*'], 'page', $page);
+
+        return response()->json($brands);
     }
 
     /**
