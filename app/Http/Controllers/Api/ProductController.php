@@ -21,8 +21,8 @@ class ProductController extends Controller
         $perPage = $perPage > 0 ? $perPage : 6;
         $page = $page > 0 ? $page : 1;
 
-        // Query with optional search filter
-        $query = Product::with('unit');
+        // Query with optional search filter and ordering
+        $query = Product::with(['unit', 'brand', 'category'])->orderBy('created_at', 'desc');
         if (!empty($search)) {
             $query->where(function ($q) use ($search) {
                 $q->where('name', 'like', "%$search%")
@@ -46,7 +46,7 @@ class ProductController extends Controller
             'price' => 'required|numeric|min:0',
             'stock' => 'required|integer|min:0',
         ]);
-        $product = Product::create($request->only(['name', 'unit_id', 'price', 'stock','brand','category']));
+        $product = Product::create($request->only(['name', 'unit_id', 'brand_id', 'price', 'stock', 'category']));
         return response()->json($product, 201);
     }
     /**
@@ -68,7 +68,7 @@ class ProductController extends Controller
             'price' => 'sometimes|required|numeric|min:0',
             'stock' => 'sometimes|required|integer|min:0',
         ]);
-        $product->update($request->only(['unit_id' ,'name', 'price', 'stock', 'brand', 'category' ]));
+        $product->update($request->only(['unit_id', 'brand_id', 'name', 'price', 'stock', 'category_id' ]));
         return response()->json($product);
     }
     /**
