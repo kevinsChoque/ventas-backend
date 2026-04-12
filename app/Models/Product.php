@@ -16,7 +16,7 @@ class Product extends Model
         'category_id',
         'price',
         'stock',
-        'category'
+        'image',
     ];
     public function unit()
     {

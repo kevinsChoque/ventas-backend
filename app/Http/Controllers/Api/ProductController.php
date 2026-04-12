@@ -40,13 +40,25 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
+        $validatedData = $request->validate([
             'name' => 'required|string|max:255',
-            'unit_id' => 'nullable|exists:units,id',
-            'price' => 'required|numeric|min:0',
-            'stock' => 'required|integer|min:0',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Validación para la imagen
+            'price' => 'required|numeric|min:0', // Validación para el precio
+            'stock' => 'required|integer|min:0', // Validación para el stock
+            'unit_id' => 'required|exists:units,id', // Validación para la unidad
+            'brand_id' => 'nullable|exists:brands,id', // Validación para la marca
+            'category_id' => 'nullable|exists:categories,id', // Validación para la categoría
         ]);
-        $product = Product::create($request->only(['name', 'unit_id', 'brand_id', 'price', 'stock', 'category']));
+        // Crear el producto sin la imagen primero para obtener el ID
+        $productData = $request->only(['name', 'unit_id', 'brand_id', 'price', 'stock', 'category_id']);
+        $product = Product::create($productData);
+
+        // Manejar la subida de la imagen si existe
+        if ($request->hasFile('image')) {
+            $imageName = "producto_{$product->id}." . $request->file('image')->getClientOriginalExtension();
+            $imagePath = $request->file('image')->storeAs('products', $imageName, 'public');
+            $product->update(['image' => $imagePath]);
+        }
         return response()->json($product, 201);
     }
     /**
