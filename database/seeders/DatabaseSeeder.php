@@ -26,6 +26,7 @@ class DatabaseSeeder extends Seeder
             UnitSeeder::class,
             ProductSeeder::class,
             ClientSeeder::class, // Descomentar para incluir ClientSeeder
+            UserSeeder::class, // Seeder para crear un usuario predeterminado
         ]);
     }
 }
